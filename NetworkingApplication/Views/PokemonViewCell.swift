@@ -15,15 +15,16 @@ class PokemonViewCell: UITableViewCell {
     
     func configure(pokemon: Pokemon) {
         nameLabel.text = pokemon.name
-        NetworkingManager.shared.fetch(dataType: Character.self, url: pokemon.url) { [unowned self] character in
-            
-            let imageUrl = character.sprites.other.home.front_default
-            
-            NetworkingManager.shared.fetchImage(fom: imageUrl) { data in
-                self.pokemonImageView.image = UIImage(data: data)
+        
+//        NetworkingManager.shared.fetch( url: pokemon.url) { [unowned self] character in
+//            
+//            let imageUrl = character.sprites.other.home.front_default
+//            
+//            NetworkingManager.shared.fetchImage(fom: imageUrl) { data in
+//                self.pokemonImageView.image = UIImage(data: data)
             }
         }
-    }
-}
+//    }
+//}
 
 

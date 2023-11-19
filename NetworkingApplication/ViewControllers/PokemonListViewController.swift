@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class PokemonListViewController: UITableViewController {
     
@@ -13,31 +14,48 @@ class PokemonListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.reloadData()
         fetchPokemons()
+        
+        tableView.reloadData()
+        print(pokemons)
+        
+        for i in pokemons {
+            print(i)
+        }
     }
     
     private func fetchPokemons() {
-        NetworkingManager.shared.fetch(dataType: PokemonApp.self, url: List.url.rawValue) { [unowned self] pokemonApp in
-            self.pokemons = pokemonApp.results // присваиваем нашему пустому массиву захваченный массив из блока замыкания.
-            self.tableView.reloadData()
+        NetworkingManager.shared.fetchPokemons(from: List.url.rawValue) { [unowned self] result in
+            
+            switch result {
+            case .success(let pokemons):
+                self.pokemons = pokemons 
+                self.tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
         }
     }
+    
 }
-
 extension PokemonListViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        pokemons.count
+        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            pokemons.count
+            
+        }
         
+        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell", for: indexPath) as? PokemonViewCell else { return UITableViewCell() }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell", for: indexPath)
+            guard let cell = cell as? PokemonViewCell else { return UITableViewCell() }
+            let pokemon = pokemons[indexPath.row]
+            
+            cell.configure(pokemon: pokemon)
+//            cell.selectionStyle = .none
+            return cell
+        }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell", for: indexPath) as? PokemonViewCell else { return UITableViewCell() }
-        let pokemon = pokemons[indexPath.row]
-       
-        cell.configure(pokemon: pokemon)
-        cell.selectionStyle = .none
-        return cell
-    }
-}
-
+    
 
