@@ -14,29 +14,17 @@ struct PokemonApp: Codable {
         self.results = results
     }
     
-    
     static func getPokemons(from value: Any) -> [Pokemon] {
-//        guard let pokemonsData = value as? [String:[[String: Any]]] else { return [] }
-        guard let pokemonsData = value as? [[String: Any]] else { return [] }
-        
+        guard let pokemonData = value as? [String: Any] else { return [] }
+        guard let results = pokemonData["results"] as? [[String: Any]] else { return [] }
+
         var pokemons = [Pokemon]()
         
-//        for pokemonData in pokemonsData {
-//            for item in pokemonData.value {
-//               let pokemon = Pokemon(pokemonData: item)
-//                pokemons.append(pokemon)
-//            }
-//        }
-        
-        for pokemonData in pokemonsData {
-            let pokemon = Pokemon(pokemonData: pokemonData)
-            pokemons.append(pokemon)
+        for pokemon in results {
+            pokemons.append(Pokemon(pokemonData: pokemon))
         }
-        
         return pokemons
-        
     }
-    
 }
 
 struct Pokemon: Codable {
@@ -51,34 +39,45 @@ struct Pokemon: Codable {
     init(pokemonData: [String: Any]){
         self.name = pokemonData["name"] as? String ?? ""
         self.url = pokemonData["url"] as? String ?? ""
-        
-        
     }
 }
 
-// след ссылка
 struct Character: Codable {
     let sprites: Sprites
-}
+    init(characterDict: [String: Any]) {
+        let spritesDict = characterDict["sprites"] as? [String: Any] ?? [:]
+            self.sprites = Sprites(spritesDict: spritesDict)
+        }
+    
+        static func getCharacter(from value: Any) -> Character? {
+            guard let characterData = value as? [String: Any] else { return nil }
+            
+            return Character(characterDict: characterData)
+        }
+    }
 
 struct Sprites: Codable {
     let other: Home
+    
+    init(spritesDict: [String: Any]) {
+         let otherDict = spritesDict["other"] as? [String: Any] ?? [:]
+            self.other = Home(homeDict: otherDict)
+        }
 }
 
 struct Home: Codable {
     let home: Front
+    
+    init(homeDict: [String: Any]) {
+        let homeDict = homeDict["home"] as? [String: Any] ?? [:]
+        self.home = Front(value: homeDict)
+    }
+    
+    struct Front: Codable {
+        let front_default: String
+        
+        init(value: [String: Any]) {
+            self.front_default = value["front_default"] as? String ?? ""
+        }
+    }
 }
-
-struct Front: Codable {
-    let front_default: String
-}
-
-
-//  "sprites": {
-//
-//      "other": {
-//
-//              "home": {
-//                          "front_default":                                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-//
-

@@ -9,15 +9,8 @@
 import Foundation
 import Alamofire
 
-//enum NetworkError: Error {
-//    case invalidUrl
-//    case noData
-//    case decodingError
-//}
-
 enum List: String {
     case url = "https://pokeapi.co/api/v2/pokemon"
-
 }
 
 final class NetworkingManager {
@@ -33,25 +26,41 @@ final class NetworkingManager {
                 switch response.result {
                 case .success(let value):
                     let pokemons = PokemonApp.getPokemons(from: value)
-//                    print(value)
                     completion(.success(pokemons))
                 case .failure(let error):
                     completion(.failure(error))
                 }
             }
     }
-
-
-    func fetchImage(fom url: String, completion: @escaping(Data) -> Void ) {
-        guard let url = URL(string: url) else {return}
-        
-        DispatchQueue.global().async {
-            guard let imageData = try? Data(contentsOf: url) else {return}
-            
-            DispatchQueue.main.async {
-                completion(imageData)
+    
+    func fetchCharachers(from url: String, completion: @escaping(Result<Character, AFError>) -> Void) {
+        guard let url = URL(string: url) else { return }
+        AF.request(url)
+            .validate()
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    let character = Character.getCharacter(from: value)
+                    completion(.success(character ?? Character(characterDict: [:])))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
-        }
+    }
+    
+    func fetchData(from url: String, completion: @escaping(Result<Data, AFError>) -> Void) {
+        guard let url = URL(string: url) else { return }
+        AF.request(url)
+            .validate()
+            .responseData { dataResponse in
+                switch dataResponse.result {
+                case .success(let imageData):
+                    print(imageData)
+                    completion(.success(imageData))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
     }
 }
 

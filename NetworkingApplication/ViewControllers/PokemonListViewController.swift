@@ -8,21 +8,14 @@
 import UIKit
 import Alamofire
 
-class PokemonListViewController: UITableViewController {
+final class PokemonListViewController: UITableViewController {
     
-    var pokemons: [Pokemon] = [] // пустой массив, который будет принимать инфу после парсинга.
+   private var pokemons: [Pokemon] = []
+    private let networkingManager = NetworkingManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.reloadData()
         fetchPokemons()
-        
-        tableView.reloadData()
-        print(pokemons)
-        
-        for i in pokemons {
-            print(i)
-        }
     }
     
     private func fetchPokemons() {
@@ -42,17 +35,16 @@ class PokemonListViewController: UITableViewController {
 extension PokemonListViewController {
         override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             pokemons.count
-            
         }
         
         override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell", for: indexPath) as? PokemonViewCell else { return UITableViewCell() }
             let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell", for: indexPath)
             guard let cell = cell as? PokemonViewCell else { return UITableViewCell() }
-            let pokemon = pokemons[indexPath.row]
             
+            let pokemon = pokemons[indexPath.row]
             cell.configure(pokemon: pokemon)
-//            cell.selectionStyle = .none
+            cell.selectionStyle = .none
+            
             return cell
         }
     }
