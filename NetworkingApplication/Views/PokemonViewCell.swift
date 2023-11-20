@@ -16,7 +16,7 @@ final class PokemonViewCell: UITableViewCell {
     
     func configure(pokemon: Pokemon) {
         nameLabel.text = pokemon.name
-        
+        // метод для того, чтобы вытащить экземпляр Character
         NetworkingManager.shared.fetchCharachers(from: pokemon.url) { result in
             switch result {
     
@@ -27,7 +27,7 @@ final class PokemonViewCell: UITableViewCell {
             }
         }
     }
-    
+    // создаем метод для того, чтобы вытащить картинку из json и присваиваем ее нашему аутлету, вызовем ее после того ,как вытащим экземпляр Character выше
     func configureImage(character: Character) {
         NetworkingManager.shared.fetchData(from: character.sprites.other.home.front_default) { result in
             switch result {

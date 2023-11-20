@@ -27,6 +27,8 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uWb-xf-KbE">
                                             <rect key="frame" x="20" y="0.0" width="59" height="59"/>
                                             <constraints>
+                                                <constraint firstAttribute="height" constant="59" id="5cV-b6-mna"/>
+                                                <constraint firstAttribute="width" constant="59" id="9Wi-xv-DyV"/>
                                                 <constraint firstAttribute="width" secondItem="uWb-xf-KbE" secondAttribute="height" multiplier="1:1" id="YGT-NF-OcT"/>
                                             </constraints>
                                         </imageView>

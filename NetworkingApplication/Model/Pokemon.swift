@@ -53,7 +53,7 @@ struct Character: Codable {
             guard let characterData = value as? [String: Any] else { return nil }
             
             return Character(characterDict: characterData)
-        }
+        } // метод для того, чтобы вытащить экземпляр Character из типа данных Any, которые мы захватили после декодирования json
     }
 
 struct Sprites: Codable {

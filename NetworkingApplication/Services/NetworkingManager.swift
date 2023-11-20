@@ -18,6 +18,7 @@ final class NetworkingManager {
     
     private init() {}
     
+    // метод для того, чтобы сформировать массив из Pokemon и заполнить таблицу его данными
     func fetchPokemons(from url: String, completion: @escaping(Result<[Pokemon], AFError>) -> Void) {
         guard let url = URL(string: url) else { return }
         AF.request(url)
@@ -32,7 +33,7 @@ final class NetworkingManager {
                 }
             }
     }
-    
+    // метод, чтобы достать экземпляр Character
     func fetchCharachers(from url: String, completion: @escaping(Result<Character, AFError>) -> Void) {
         guard let url = URL(string: url) else { return }
         AF.request(url)
@@ -47,7 +48,7 @@ final class NetworkingManager {
                 }
             }
     }
-    
+    // метод для того, чтобы вытащить картинку из Character
     func fetchData(from url: String, completion: @escaping(Result<Data, AFError>) -> Void) {
         guard let url = URL(string: url) else { return }
         AF.request(url)
